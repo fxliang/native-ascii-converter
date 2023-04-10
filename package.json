@@ -60,7 +60,8 @@
                 }
             }
         },
-        "commands": [{
+        "commands": [
+            {
                 "command": "extension.convertNativeToAscii",
                 "title": "Convert characters: Native to Ascii"
             },
@@ -71,6 +72,10 @@
             {
                 "command": "extension.convertCodePointToNative",
                 "title": "Convert characters: codePoint to Native"
+            },
+            {
+                "command": "extension.convertNativeToCodePoint",
+                "title": "Convert characters:  Native to codePoint"
             }
         ]
     },

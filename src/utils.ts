@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-
+const uchars  = require('uchars');
 
 // アクティブテキストファイルの全内容を取得する
 export const getFullText = () : string => {
@@ -40,6 +40,26 @@ export const nativeToAscii = (text : string, lowerCase : boolean = true) : strin
     .join('');
 };
 
+export const nativeToCodePoint = (text : string, lowerCase : boolean = true) : string => {
+    var res  = "";
+     var arr  = uchars(text);
+     for(var i=0; i < arr.length; i++)
+     {
+         //console.log(arr[i].codePointAt(0));
+         if(arr[i].codePointAt(0) < 0x7f){
+             if (i > 0 && arr[i - 1].codePointAt(0) >= 0x7f)
+                 res += " "
+             res += arr[i];
+         }
+         else{
+             var pre = lowerCase ? "\\u" : "\\U";
+             var value = (arr[i].codePointAt(0)).toString(16);
+             value = lowerCase ? value.toLocaleLowerCase() : value.toLocaleUpperCase();
+             res += pre + value;
+         }
+     }
+    return res;
+ };
 // Unicode形式からデコードする
 export const asciiToNative = (text : string) : string => {
   return unescape(text.replace(/\\(?=u[0-9A-Za-z])/g, '%'));

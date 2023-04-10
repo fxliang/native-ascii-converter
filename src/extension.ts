@@ -23,6 +23,10 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerTextEditorCommand(
       'extension.convertCodePointToNative', handle(convertCodePointToNative))
   );
+  context.subscriptions.push(
+    vscode.commands.registerTextEditorCommand(
+      'extension.convertNativeToCodePoint', handle(convertNativeToCodePoint))
+  );
   registerListeners();
 }
 
@@ -47,6 +51,23 @@ const convertNativeToAscii = () : void => {
   utils.setFullText(newText);
 };
 
+const convertNativeToCodePoint = () : void => {
+  const lowerCase = utils.getConfigParameter('letter-case') === 'Lower case';
+  const commentConversion = utils.getConfigParameter('comment-conversion');
+
+  const newText = utils.getFullText()
+    .split(/\r?\n/g)
+    .map(line => {
+      if (!commentConversion && line.startsWith(COMMENT_PREFIX)) {
+        return line;
+      } else {
+        return utils.nativeToCodePoint(line, lowerCase);
+      }
+    })
+    .join(utils.getEol());
+
+  utils.setFullText(newText);
+};
 // アクティブドキュメントの内容をUnicodeデコード変換する
 const convertAsciiToNative = () : void => {
   const newText = utils.asciiToNative(utils.getFullText());
