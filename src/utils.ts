@@ -47,7 +47,7 @@ export const nativeToCodePoint = (text : string, lowerCase : boolean = true) : s
      {
          //console.log(arr[i].codePointAt(0));
          if(arr[i].codePointAt(0) < 0x7f){
-             if (i > 0 && arr[i - 1].codePointAt(0) >= 0x7f)
+             if (i > 0 && arr[i - 1].codePointAt(0) >= 0x7f && arr[i].codePointAt(0) != 0x20 && arr[i].codePointAt(0) != '\t')
                  res += " "
              res += arr[i];
          }
