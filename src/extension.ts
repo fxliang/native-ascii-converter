@@ -19,6 +19,10 @@ export function activate(context: vscode.ExtensionContext) {
       'extension.convertAsciiToNative', handle(convertAsciiToNative))
   );
 
+  context.subscriptions.push(
+    vscode.commands.registerTextEditorCommand(
+      'extension.convertCodePointToNative', handle(convertCodePointToNative))
+  );
   registerListeners();
 }
 
@@ -49,6 +53,10 @@ const convertAsciiToNative = () : void => {
   utils.setFullText(newText);
 };
 
+const convertCodePointToNative = () : void => {
+  const newText = utils.codePointToNative(utils.getFullText());
+  utils.setFullText(newText);
+};
 // 変換処理関数をラップして、エラーハンドリングを行う
 const handle = (func : Function) => {
   return () => {

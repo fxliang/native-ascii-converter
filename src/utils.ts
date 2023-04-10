@@ -45,6 +45,23 @@ export const asciiToNative = (text : string) : string => {
   return unescape(text.replace(/\\(?=u[0-9A-Za-z])/g, '%'));
 };
 
+export const codePointToNative = (text : string) : string => {
+    var newText = text;
+    // matchAll by steps;
+    var mats = [];
+    var mat;
+    var regex = /\\u[a-f0-9A-F]+/gi;
+    while (mat = regex.exec(newText)) {
+        mats.push(mat);
+    }
+    // matchAll end, get mats
+    if (mats.length) {
+        for (var i = 0; i < mats.length; i++) {
+            newText = newText.replace(mats[i][0], String.fromCodePoint(parseInt(mats[i][0].substring(2), 16)));
+        }
+    }
+    return newText;
+};
 // アクティブテキストエディターを取得する
 export const getEditor = () : vscode.TextEditor => {
   if (vscode.window.activeTextEditor) {
